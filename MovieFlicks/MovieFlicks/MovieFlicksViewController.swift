@@ -16,6 +16,7 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var networkErrorView: UIView!
     
     var movies: [NSDictionary]?
+    var endpoint:String = "now_playing"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +24,9 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
         moveFlicksTableView.dataSource = self
         moveFlicksTableView.delegate = self
         networkErrorView.hidden = true
+        
+        self.endpoint = (self.parentViewController as! MovieNavViewController).endpoint
+        self.navigationItem.title = (self.parentViewController as! MovieNavViewController).listModeTitle
         
         let refreshControl = UIRefreshControl()
         
@@ -35,7 +39,8 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
     
     func refreshMovieData(refreshControl: UIRefreshControl) {
         let api_key = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = NSURL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(api_key)")
+        let urlString = "https://api.themoviedb.org/3/movie/\(self.endpoint)?api_key=\(api_key)"
+        let url = NSURL(string: urlString)
         let request = NSURLRequest(URL: url!)
         let session = NSURLSession(
             configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),

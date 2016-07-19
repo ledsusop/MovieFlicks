@@ -8,7 +8,7 @@
         <!--Movie Flicks View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="MovieFlicksViewController" customModule="MovieFlicks" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="movieFlicksController" id="BYZ-38-t0r" customClass="MovieFlicksViewController" customModule="MovieFlicks" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -22,18 +22,18 @@
                                         <rect key="frame" x="0.0" y="92" width="320" height="133"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8W9-hz-Wyg" id="4fe-ZE-osa">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="132.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="133"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XOK-PU-7Nf">
-                                                    <rect key="frame" x="111" y="8" width="201" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XOK-PU-7Nf">
+                                                    <rect key="frame" x="111" y="8" width="176" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Overview" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7g1-i5-qtX">
-                                                    <rect key="frame" x="111" y="61" width="201" height="63"/>
+                                                    <rect key="frame" x="111" y="61" width="176" height="63"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -128,10 +128,10 @@
             </objects>
             <point key="canvasLocation" x="1070" y="428"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Movie Nav View Controller-->
         <scene sceneID="6XM-Sn-oLR">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="8ME-or-COl" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="movieNavController" automaticallyAdjustsScrollViewInsets="NO" id="8ME-or-COl" customClass="MovieNavViewController" customModule="MovieFlicks" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Tdq-RD-tVN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
