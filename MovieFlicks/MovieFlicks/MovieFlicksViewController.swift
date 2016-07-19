@@ -24,6 +24,16 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
         moveFlicksTableView.delegate = self
         networkErrorView.hidden = true
         
+        let refreshControl = UIRefreshControl()
+        
+        refreshControl.addTarget(self, action: #selector(refreshMovieData(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        moveFlicksTableView.addSubview(refreshControl)
+        
+        refreshMovieData(refreshControl)
+        
+    }
+    
+    func refreshMovieData(refreshControl: UIRefreshControl) {
         let api_key = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = NSURL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(api_key)")
         let request = NSURLRequest(URL: url!)
@@ -33,7 +43,7 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
             delegateQueue:NSOperationQueue.mainQueue()
         )
         
-         MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
         let task : NSURLSessionDataTask = session.dataTaskWithRequest(request,
                                                                       completionHandler: { (dataOrNil, response, error) in
@@ -49,6 +59,8 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
                                                                             self.networkErrorView.hidden = false
                                                                             MBProgressHUD.hideHUDForView(self.view, animated: true)
                                                                         }
+                                                                        
+                                                                        refreshControl.endRefreshing()
         });
         task.resume()
     }
