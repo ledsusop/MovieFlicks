@@ -175,35 +175,37 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell{
         let cell = movieFlicksGridView.dequeueReusableCellWithReuseIdentifier("MovieFlicksCollectionCell",forIndexPath: indexPath) as! MovieFlicksCollectionViewCell
         
-        let movie = (searchActive ? filtered : movies)![indexPath.row]
-        let title = movie["title"] as! String
-        
-        cell.titleLabel.text = title
-        
-        let baseUrl = "https://image.tmdb.org/t/p/w342"
-        if let posterPath = movie["poster_path"] as? String {
-            let imageUrl = NSURL(string: baseUrl + posterPath)
-            let imageRequest = NSURLRequest(URL: imageUrl!)
+        let curmovies = (searchActive ? filtered : movies)
+        if let movie = curmovies![indexPath.row] as? NSDictionary {
+            let title = movie["title"] as! String
             
-            cell.posterView.setImageWithURLRequest(
-                imageRequest,
-                placeholderImage: nil,
-                success: { (imageRequest, imageResponse, image) -> Void in
-                    
-                    // imageResponse will be nil if the image is cached
-                    if imageResponse != nil {
-                        cell.posterView.alpha = 0.0
-                        cell.posterView.image = image
-                        UIView.animateWithDuration(0.3, animations: { () -> Void in
-                            cell.posterView.alpha = 1.0
-                        })
-                    } else {
-                        cell.posterView.image = image
-                    }
-                },
-                failure: { (imageRequest, imageResponse, error) -> Void in
-                    // do something for the failure condition
-            })
+            cell.titleLabel.text = title
+            
+            let baseUrl = "https://image.tmdb.org/t/p/w342"
+            if let posterPath = movie["poster_path"] as? String {
+                let imageUrl = NSURL(string: baseUrl + posterPath)
+                let imageRequest = NSURLRequest(URL: imageUrl!)
+                
+                cell.posterView.setImageWithURLRequest(
+                    imageRequest,
+                    placeholderImage: nil,
+                    success: { (imageRequest, imageResponse, image) -> Void in
+                        
+                        // imageResponse will be nil if the image is cached
+                        if imageResponse != nil {
+                            cell.posterView.alpha = 0.0
+                            cell.posterView.image = image
+                            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                                cell.posterView.alpha = 1.0
+                            })
+                        } else {
+                            cell.posterView.image = image
+                        }
+                    },
+                    failure: { (imageRequest, imageResponse, error) -> Void in
+                        // do something for the failure condition
+                })
+            }
         }
         
         return cell
