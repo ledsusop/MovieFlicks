@@ -10,15 +10,18 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 
-class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
 
     @IBOutlet weak var moveFlicksTableView: UITableView!
     @IBOutlet weak var movieFlicksGridView: UICollectionView!
     @IBOutlet weak var networkErrorView: UIView!
     @IBOutlet weak var layoutControl: UISegmentedControl!
+    @IBOutlet weak var searchTitile: UISearchBar!
     
     var movies: [NSDictionary]?
+    var filtered:[NSDictionary]?
     var endpoint:String = "now_playing"
+    var searchActive : Bool = false
     
     let layoutTypes = ["list","grid"]
     let refreshControl = UIRefreshControl()
@@ -35,6 +38,7 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
         
         movieFlicksGridView.dataSource = self
         movieFlicksGridView.delegate = self
+        searchTitile.delegate = self
         
         networkErrorView.hidden = true
         
@@ -113,7 +117,8 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        if let movies = movies {
+        
+        if let movies = (searchActive ? filtered : movies) {
             return movies.count
         }else {
             return 0
@@ -123,7 +128,7 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
         let cell = moveFlicksTableView.dequeueReusableCellWithIdentifier("MovieFlicksCell",forIndexPath: indexPath) as! MovieFlicksCell
         
-        let movie = movies![indexPath.row]
+        let movie = (searchActive ? filtered : movies)![indexPath.row]
         let title = movie["title"] as! String
         let overview = movie["overview"] as! String
         
@@ -140,7 +145,7 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int{
-        if let movies = movies {
+        if let movies = (searchActive ? filtered : movies) {
             return movies.count
         }else {
             return 0
@@ -150,7 +155,7 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell{
         let cell = movieFlicksGridView.dequeueReusableCellWithReuseIdentifier("MovieFlicksCollectionCell",forIndexPath: indexPath) as! MovieFlicksCollectionViewCell
         
-        let movie = movies![indexPath.row]
+        let movie = (searchActive ? filtered : movies)![indexPath.row]
         let title = movie["title"] as! String
         
         cell.titleLabel.text = title
@@ -171,6 +176,45 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
             refreshMovieData(self.refreshControl)
         }
     }
+    
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        searchActive = true;
+    }
+    
+    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+        searchActive = false;
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchActive = false;
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        searchActive = false;
+    }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        filtered = movies!.filter({(movie) -> Bool in
+            let tmp: NSString = NSString(string: movie["title"] as! String)
+            let range = tmp.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
+            return range.location != NSNotFound
+        })
+        
+        if(filtered!.count == 0){
+            searchActive = false;
+        } else {
+            searchActive = true;
+        }
+        
+        if self.currentLayoutType == "grid"{
+            self.movieFlicksGridView.reloadData()
+        }else{
+            self.moveFlicksTableView.reloadData()
+        }
+        
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         var indexPath:  NSIndexPath?
         if let cell = sender as? UITableViewCell {
@@ -179,7 +223,7 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
             indexPath = movieFlicksGridView.indexPathForCell(sender as! UICollectionViewCell)
         }
         
-        let movie = movies![indexPath!.row]
+        let movie = (searchActive ? filtered : movies)![indexPath!.row]
         
         let detailViewController = segue.destinationViewController as!DetailViewController
         detailViewController.movie = movie
