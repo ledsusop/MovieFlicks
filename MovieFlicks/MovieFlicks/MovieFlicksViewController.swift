@@ -138,7 +138,27 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
         let baseUrl = "https://image.tmdb.org/t/p/w342"
         if let posterPath = movie["poster_path"] as? String {
             let imageUrl = NSURL(string: baseUrl + posterPath)
-            cell.movieFlicksImageView.setImageWithURL(imageUrl!)
+            let imageRequest = NSURLRequest(URL: imageUrl!)
+
+            cell.movieFlicksImageView.setImageWithURLRequest(
+                imageRequest,
+                placeholderImage: nil,
+                success: { (imageRequest, imageResponse, image) -> Void in
+                    
+                    // imageResponse will be nil if the image is cached
+                    if imageResponse != nil {
+                        cell.movieFlicksImageView.alpha = 0.0
+                        cell.movieFlicksImageView.image = image
+                        UIView.animateWithDuration(0.3, animations: { () -> Void in
+                            cell.movieFlicksImageView.alpha = 1.0
+                        })
+                    } else {
+                        cell.movieFlicksImageView.image = image
+                    }
+                },
+                failure: { (imageRequest, imageResponse, error) -> Void in
+                    // do something for the failure condition
+            })
         }
         
         return cell
@@ -163,7 +183,27 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
         let baseUrl = "https://image.tmdb.org/t/p/w342"
         if let posterPath = movie["poster_path"] as? String {
             let imageUrl = NSURL(string: baseUrl + posterPath)
-            cell.posterView.setImageWithURL(imageUrl!)
+            let imageRequest = NSURLRequest(URL: imageUrl!)
+            
+            cell.posterView.setImageWithURLRequest(
+                imageRequest,
+                placeholderImage: nil,
+                success: { (imageRequest, imageResponse, image) -> Void in
+                    
+                    // imageResponse will be nil if the image is cached
+                    if imageResponse != nil {
+                        cell.posterView.alpha = 0.0
+                        cell.posterView.image = image
+                        UIView.animateWithDuration(0.3, animations: { () -> Void in
+                            cell.posterView.alpha = 1.0
+                        })
+                    } else {
+                        cell.posterView.image = image
+                    }
+                },
+                failure: { (imageRequest, imageResponse, error) -> Void in
+                    // do something for the failure condition
+            })
         }
         
         return cell
