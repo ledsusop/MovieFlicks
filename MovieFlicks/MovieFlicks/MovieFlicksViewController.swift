@@ -90,10 +90,11 @@ class MovieFlicksViewController: UIViewController, UITableViewDataSource, UITabl
         let task : NSURLSessionDataTask = session.dataTaskWithRequest(request,
                                                                       completionHandler: { (dataOrNil, response, error) in
                                                                         if let data = dataOrNil {
+                                                                            self.networkErrorView.hidden = true
+                                                                            MBProgressHUD.hideHUDForView(self.view, animated: true)
                                                                             if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
                                                                                 data, options:[]) as? NSDictionary {
                                                                                 NSLog("response: \(responseDictionary)")
-                                                                                MBProgressHUD.hideHUDForView(self.view, animated: true)
                                                                                 self.movies = responseDictionary["results"] as? [NSDictionary]
                                                                                 if self.currentLayoutType == "list"{
                                                                                     self.moveFlicksTableView.reloadData()
