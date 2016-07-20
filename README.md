@@ -2,7 +2,7 @@
 
 MovieFlicks is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
-Time spent: 6 hours spent in total
+Time spent: 6.5 hours spent in total
 
 ## User Stories
 
@@ -17,9 +17,9 @@ The following **required** functionality is completed:
 The following **optional** features are implemented:
 
 - [X] Add a tab bar for **Now Playing** and **Top Rated** movies.
-- [ ] Implement segmented control to switch between list view and grid view.
-- [ ] Add a search bar.
-- [ ] All images fade in.
+- [X] Implement segmented control to switch between list view and grid view.
+- [X] Add a search bar.
+- [X] All images fade in.
 - [ ] For the large poster, load the low-res image first, switch to high-res when complete.
 - [ ] Customize the highlight and selection effect of the cell.
 - [ ] Customize the navigation bar.
@@ -32,7 +32,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/1oy4ndQ.gif' title='MovieFlicks Video Walkthrough' width='' alt='MovieFlicks Video Walkthrough' />
+<img src='http://i.imgur.com/5U7RumZ.gif' title='MovieFlicks Video Walkthrough' width='' alt='MovieFlicks Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
